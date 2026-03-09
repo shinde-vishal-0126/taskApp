@@ -66,8 +66,8 @@ jobs:
       - name: Build Project
         run: npm run build
 
-      - name: Start Server
-        run: npm start
+      # - name: Start Server
+      #   run: npm start
 
 
       
