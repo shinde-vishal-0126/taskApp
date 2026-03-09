@@ -65,3 +65,9 @@ jobs:
       # Step 9: Build the project (if your project has build step)
       - name: Build Project
         run: npm run build
+
+      - name: Start Server
+        run: npm start
+
+
+      
