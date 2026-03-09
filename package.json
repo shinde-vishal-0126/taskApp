@@ -17,7 +17,8 @@
   "scripts": {
     "test": "echo \"No tests yet\"",
     "lint": "eslint .",
-    "coverage": "jest --coverage --passWithNoTests"
+    "coverage": "jest --coverage --passWithNoTests",
+    "build": "echo Build step completed"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
