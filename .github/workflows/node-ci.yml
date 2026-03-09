@@ -1,27 +1,67 @@
+# Name of the workflow shown in GitHub Actions tab
+name: Node CI Pipeline
 
-name: Node CI
-
+# When should this workflow run
 on:
+  # Run when code is pushed to main branch
   push:
     branches: [main]
+
+  # Run when a Pull Request is created for main branch
   pull_request:
     branches: [main]
 
 jobs:
   build:
+
+    # GitHub provides a free virtual machine runner
+    # ubuntu-latest = latest Ubuntu Linux machine
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+
+      # Step 1: Download your repository code into the runner
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      # Step 2: Install Node.js environment
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      # Step 3: Cache node_modules to speed up build
+      # This prevents reinstalling dependencies every time
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 4: Install project dependencies
       - name: Install Dependencies
         run: npm install
 
+      # Step 5: Run ESLint to check code quality
+      # This ensures coding standards are followed
+      - name: Run Linter
+        run: npm run lint
+
+      # Step 6: Run unit tests
+      # Usually done using Jest or Mocha
       - name: Run Tests
         run: npm test
+
+      # Step 7: Generate test coverage report
+      - name: Test Coverage
+        run: npm run coverage
+
+      # Step 8: Check security vulnerabilities in dependencies
+      - name: Security Audit
+        run: npm audit --audit-level=high
+
+      # Step 9: Build the project (if your project has build step)
+      - name: Build Project
+        run: npm run build
